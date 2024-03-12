@@ -1,22 +1,14 @@
 //import { useState } from "react";
 import React from "react";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 //import { useQuery, gql } from "@apollo/client";
-import { GET_PROJECTS_QUERY } from './queries'; // Import the query from queries.js
+import { GET_PROJECTS_QUERY, ADD_TASK_MUTATION, GET_TASKS_QUERY } from './queries'; // Import queries
+import { compose, flowRight } from 'lodash'; // Import compose and flowRight
 
-/** 
-const getProjectsQuery = gql`
-  query {
-    projects {
-      id
-      title
-    }
-  }
-`;
 
-const { loading, error, data } = useQuery(getProjectsQuery);
-*/
 const { loading, error, data } = useQuery(GET_PROJECTS_QUERY);
+const [addTask] = useMutation(ADD_TASK_MUTATION); // Use the addTask mutation
+
 
 const handleChange = (e) => {
   const newInputs = {
@@ -27,7 +19,7 @@ const handleChange = (e) => {
   setInputs(newInputs)
 }
 
-/**FUNC */
+
 function AddTask(props) {
   const [inputs, setInputs] = useState({
     title: "",
@@ -46,15 +38,30 @@ function displayProjects() {
     return <option>Error fetching projects...</option>;
   }
 
-  return data.projects.map(project => (
+  return projectsData.projects.map(project => (
     <option key={project.id} value={project.id}>
       {project.title}
     </option>
   ));
 }
 
+const submitForm = (e) => {
+  e.preventDefault();
+  addTask({
+    variables: {
+      title: inputs.title,
+      weight: inputs.weight,
+      description: inputs.description,
+      projectId: inputs.projectId
+    },
+    refetchQueries: [
+      { query: GET_TASKS_QUERY }
+    ]
+  });
+}
+
   return (
-    <form className="task" id="add-task" /*onSubmit={...}*/>
+    <form className="task" id="add-task" onSubmit={submitForm}>
       <div className="field">
         <label>Task title:</label>
         <input 
@@ -107,4 +114,9 @@ function displayProjects() {
   );
 }
 
-export default AddTask;
+export default compose(
+  flowRight(
+    graphql(GET_PROJECTS_QUERY, { name: 'getProjectsQuery' }),
+    graphql(ADD_TASK_MUTATION, { name: 'addTaskMutation' })
+  )
+)(AddTask);

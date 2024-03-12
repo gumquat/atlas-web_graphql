@@ -1,7 +1,6 @@
-import {
-  useState,
-  //useEffect
-} from "react";
+import { useState } from "react";
+import { useMutation } from "@apollo/client";
+import { ADD_PROJECT_MUTATION, GET_PROJECTS_QUERY } from './queries';
 
 
 function AddProject(props) {
@@ -10,8 +9,9 @@ function AddProject(props) {
     title: '',
     weight: 1,
     description: ''
-
   });
+
+  const [addProject] = useMutation(ADD_PROJECT_MUTATION);
 
   const handleChange = (e) => {
     const newInputsProject = {
@@ -22,8 +22,22 @@ function AddProject(props) {
     setInputsProject(newInputsProject)
   }
 
+  const submitForm1 = (e) => {
+    e.preventDefault();
+    addProject({
+      variables: {
+        title: inputsProject.title,
+        weight: inputsProject.weight,
+        description: inputsProject.description
+      },
+      refetchQueries: [
+        { query: GET_PROJECTS_QUERY }
+      ]
+    });
+  }
+
     return (
-    <form className="project" id="add-project" /*onSubmit={...}*/>
+    <form className="project" id="add-project" onSubmit={submitForm1}>
       <div className="field">
         <label>Project title:</label>
         <input
@@ -50,6 +64,8 @@ function AddProject(props) {
           value={inputsProject.description}
         />
       </div>
-      <button>+</button>
+      <button type="submit">+</button>
     </form>
   )};
+
+  export default AddProject;
