@@ -1,0 +1,11 @@
+# graphiql4_2
+{
+  project(id: "1") {
+    title
+    weight
+    description
+    tasks {
+      title
+    }
+  }
+}
