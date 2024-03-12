@@ -29,4 +29,26 @@ const GET_TASKS_QUERY = gql`
   }
 `;
 
-export { GET_PROJECTS_QUERY, GET_TASKS_QUERY, ADD_TASK_MUTATION, ADD_PROJECT_MUTATION };
+const GET_TASK_DETAIL_QUERY = gql`
+  query GetTaskDetail($id: ID!) {
+    task(id: $id) {
+      id
+      title
+      weight
+      description
+      project {
+        id
+        title
+        weight
+        description
+        tasks {
+          id
+          title
+          weight
+        }
+      }
+    }
+  }
+`;
+
+export { GET_PROJECTS_QUERY, GET_TASKS_QUERY, ADD_TASK_MUTATION, ADD_PROJECT_MUTATION, GET_TASK_DETAIL_QUERY };

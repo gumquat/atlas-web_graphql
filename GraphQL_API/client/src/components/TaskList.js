@@ -3,18 +3,8 @@ import { useState } from "react";
 import { graphql } from 'react-apollo';
 import { GET_TASKS_QUERY } from './queries'; // Import the query from queries.js
 
-// components
+//components
 import TaskDetails from './TaskDetails';
-
-// Define the GraphQL query
-const getTasksQuery = gql`
-  {
-    tasks {
-      id
-      title
-    }
-  }
-`;
 
 function TaskList(props) {
   const [state, setState] = useState({
@@ -44,5 +34,15 @@ function TaskList(props) {
   );
 }
 
-//export default graphql(getTasksQuery)(TaskList);
+/* Define the GraphQL query
+const getTasksQuery = gql`
+  {
+    tasks {
+      id
+      title
+    }
+  }
+`;
+*/
+
 export default graphql(GET_TASKS_QUERY)(TaskList);
