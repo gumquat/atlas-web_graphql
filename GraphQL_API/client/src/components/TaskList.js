@@ -1,6 +1,7 @@
 import { useState } from "react";
-import gql from 'apollo-boost';
+//import gql from 'apollo-boost';
 import { graphql } from 'react-apollo';
+import { GET_TASKS_QUERY } from './queries'; // Import the query from queries.js
 
 // components
 import TaskDetails from './TaskDetails';
@@ -43,4 +44,5 @@ function TaskList(props) {
   );
 }
 
-export default graphql(getTasksQuery)(TaskList);
+//export default graphql(getTasksQuery)(TaskList);
+export default graphql(GET_TASKS_QUERY)(TaskList);

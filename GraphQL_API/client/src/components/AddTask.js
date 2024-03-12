@@ -1,13 +1,10 @@
-import {
-  useState,
-  //useEffect
-} from "react";
-import { useState } from "react";
-import { useQuery, gql } from "@apollo/client";
-import React, { useState } from "react";
-import { useQuery, gql } from "@apollo/client";
+//import { useState } from "react";
+import React from "react";
+import { useQuery } from "@apollo/client";
+//import { useQuery, gql } from "@apollo/client";
+import { GET_PROJECTS_QUERY } from './queries'; // Import the query from queries.js
 
-/**CONST */
+/** 
 const getProjectsQuery = gql`
   query {
     projects {
@@ -18,6 +15,8 @@ const getProjectsQuery = gql`
 `;
 
 const { loading, error, data } = useQuery(getProjectsQuery);
+*/
+const { loading, error, data } = useQuery(GET_PROJECTS_QUERY);
 
 const handleChange = (e) => {
   const newInputs = {
